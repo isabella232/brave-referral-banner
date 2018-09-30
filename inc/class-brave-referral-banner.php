@@ -12,6 +12,7 @@ class WP_Brave_Referral_Banner {
   private $settings_slug = 'brave-referral-banner';
   private $text_domain = 'brb-text-domain';
   private $settings_hook = 'plugins_page_brave-referral-banner';
+  private $invalid_ref_link = 'brb-invalid-ref-link';
 
   // Options
   private $options = array(
@@ -30,6 +31,7 @@ class WP_Brave_Referral_Banner {
   public function __construct () {
     add_action( 'admin_menu', array( $this, 'add_plugin_settings' ) );
     add_action( 'admin_init', array( $this, 'register_plugin_settings' ) );
+    add_action( 'admin_notices', array( $this, 'register_plugin_notices' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_assets' ) );
 
     if ( $this->should_add_banner() ) {
@@ -55,13 +57,17 @@ class WP_Brave_Referral_Banner {
     register_setting( 
       $this->settings_group, 
       'referral_link', 
-      array( $this, 'sanitize_option_value' )
+      array( $this, 'validate_referral_link' )
     );
     register_setting(
       $this->settings_group,
       'referral_name',
       array( $this, 'prepare_referral_name' )
     );
+  }
+
+  public function register_plugin_notices () {
+    settings_errors( $this->invalid_ref_link );
   }
 
   public function load_admin_assets ($hook) {
@@ -108,6 +114,19 @@ class WP_Brave_Referral_Banner {
 
   public function sanitize_option_value ( $value ) {
     return trim( sanitize_text_field( $value ) );
+  }
+
+  public function validate_referral_link ( $value ) {
+    if ( preg_match( '/https:\/\/brave\.com\/[a-zA-Z0-9]{6}/', $value ) ) {
+      return $this->sanitize_option_value( $value );
+    }
+
+    add_settings_error(
+      $this->invalid_ref_link,
+      esc_attr( 'settings_updated' ),
+      __( 'Referral link invalid. Please enter a valid referral link.' ),
+      'error'
+    );
   }
 
   public function prepare_referral_name ( $value ) {
