@@ -294,11 +294,7 @@ class WP_Brave_Referral_Banner {
             </tr>
             <tr class="configuration <?php echo $this->get_display_class(); ?>">
               <div class="preview-container">
-                <?php
-                  if ( $this->is_banner_enabled() ) {
-                    $this->site_banner_template();
-                  }
-                ?>
+                <?php $this->site_banner_template(); ?>
               </div>
             </tr>
           </tbody>
@@ -316,27 +312,32 @@ class WP_Brave_Referral_Banner {
         ? 'brb-top'
         : 'brb-bottom'
       : "";
+    $hidden_class = $this->is_banner_enabled()
+      ? ""
+      : "preview-hidden";
 ?>
-    <?php if ( is_admin() ): ?>
-      <h2 class="preview-text">
-        <?php echo __( 'Banner Preview:', $this->text_domain ); ?>
-      </h2>
-    <?php endif; ?>
-    <div class="brb-banner <?php echo $position_class; ?> <?php echo $this->get_color_class(); ?>">
-      <span>
-        <?php echo __( 'Switch web browsers to Brave to protect your privacy and support', $this->text_domain ); ?>
-      </span>
-      <span class="brb-referral-name">
-        <?php echo get_option( 'referral_name' ); ?>
-      </span>
-      <a
-        target="_blank"
-        class="brb-referral-link"
-        href="<?php echo $this->get_option_value( 'referral_link' ); ?>"
-      >
-        <?php echo __( 'Try It Today >>..', $this->text_domain ); ?>
-      </a>
-      <a class="brb-referral-close">X</a>
+    <div class="preview-inner <?php echo $hidden_class; ?>">
+      <?php if ( is_admin() ): ?>
+        <h2 class="preview-text">
+          <?php echo __( 'Banner Preview:', $this->text_domain ); ?>
+        </h2>
+      <?php endif; ?>
+      <div class="brb-banner <?php echo $position_class; ?> <?php echo $this->get_color_class(); ?>">
+        <span>
+          <?php echo __( 'Switch web browsers to Brave to protect your privacy and support', $this->text_domain ); ?>
+        </span>
+        <span class="brb-referral-name">
+          <?php echo get_option( 'referral_name' ); ?>
+        </span>
+        <a
+          target="_blank"
+          class="brb-referral-link"
+          href="<?php echo $this->get_option_value( 'referral_link' ); ?>"
+        >
+          <?php echo __( 'Try It Today >>..', $this->text_domain ); ?>
+        </a>
+        <a class="brb-referral-close">X</a>
+      </div>
     </div>
 <?php
   }

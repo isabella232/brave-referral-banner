@@ -2,7 +2,7 @@
   const onReady = function () {
     $('#referral_enabled').change(function (e) {
       $('.configuration').toggleClass('row-hidden');
-      $('.preview-container').toggleClass('preview-hidden');
+      $('.preview-inner').toggleClass('preview-hidden');
     });
 
     $('#referral_style').change(function (e) {
