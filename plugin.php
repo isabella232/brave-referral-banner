@@ -12,4 +12,3 @@ include_once( BRB_PLUGIN_DIR . 'inc/class-brave-referral-banner.php' );
 if ( is_admin() ) {
   new WP_Brave_Referral_Banner();
 }
-

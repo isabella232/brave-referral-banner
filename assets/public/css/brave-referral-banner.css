@@ -1,0 +1,41 @@
+/* Banner */
+.brb-banner {
+  width: 100%;
+  color: #000;
+  text-align: center;
+  padding: 5px 10px;
+  font-size: 16px;
+}
+.brb-referral-link {
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+/* Colors */
+.bk-red {
+  background: #EFD7D4;
+}
+.bk-yellow {
+  background: #FDFAD3;
+}
+.bk-black {
+  background: #000;
+}
+.bk-branded {
+  background: #442B8D;
+}
+.bk-branded .brb-referral-link {
+  color: #FB542B;
+}
+.bk-black .brb-referral-link {
+  color: #FFF;
+}
+.bk-yellow .brb-referral-link {
+  color: #556DBD;
+}
+.bk-red .brb-referral-link {
+  color: #000;
+}
+.brb-banner.bk-black, .brb-banner.bk-branded {
+  color: #FFF;
+}

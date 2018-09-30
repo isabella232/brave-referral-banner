@@ -31,6 +31,11 @@ class WP_Brave_Referral_Banner {
     add_action( 'admin_menu', array( $this, 'add_plugin_settings' ) );
     add_action( 'admin_init', array( $this, 'register_plugin_settings' ) );
     add_action( 'admin_enqueue_scripts', array( $this, 'load_admin_assets' ) );
+
+    if ( $this->should_add_banner() ) {
+      add_action( 'wp_footer', array( $this, 'site_banner_template' ) );
+      add_action( 'wp_enqueue_scripts', array( $this, 'load_public_assets' ) );
+    }
   }
 
   public function add_plugin_settings () {
@@ -73,6 +78,18 @@ class WP_Brave_Referral_Banner {
       'plugin_settings_script',
       plugins_url( '../assets/admin/js/brave-referral-banner-admin.js', __FILE__ )
     );
+    // This is additionally used in the admin settings for the banner preview.
+    wp_enqueue_style(
+      'brave_referral_banner_style',
+      plugins_url( '../assets/public/css/brave-referral-banner.css', __FILE__ )
+    );
+  }
+
+  public function load_public_assets () {
+    wp_enqueue_style(
+      'brave_referral_banner_style',
+      plugins_url( '../assets/public/css/brave-referral-banner.css', __FILE__ )
+    );
   }
 
   public function get_option_value ( $option_name ) {
@@ -111,6 +128,11 @@ class WP_Brave_Referral_Banner {
     return get_option( 'referral_enabled' ) === "1";
   }
 
+  public function should_add_banner () {
+    return $this->is_banner_enabled() &&
+    strlen( get_option( 'referral_link' ) ) > 0;
+  }
+
   public function get_display_class () {
     return $this->is_banner_enabled()
       ? ""
@@ -144,6 +166,7 @@ class WP_Brave_Referral_Banner {
 ?>
     <input
       type="text"
+      id="<?php echo $option_name ;?>"
       name="<?php echo $option_name ;?>"
       value="<?php echo $value; ?>"
     />
@@ -202,7 +225,6 @@ class WP_Brave_Referral_Banner {
               </th>
               <td>
                 <?php $this->do_select( 'referral_style' ); ?>
-                <div class="style-color <?php echo $this->get_color_class(); ?>"></div>
               </td>
             </tr>
             <tr class="configuration <?php echo $this->get_display_class(); ?>">
@@ -238,10 +260,44 @@ class WP_Brave_Referral_Banner {
                 <?php $this->do_text_input( 'referral_name' ); ?>
               </td>
             </tr>
+            <tr class="configuration <?php echo $this->get_display_class(); ?>">
+              <div class="preview-container">
+                <?php
+                  if ( $this->is_banner_enabled() ) {
+                    $this->site_banner_template();
+                  }
+                ?>
+              </div>
+            </tr>
           </tbody>
         </table>
         <?php submit_button(); ?>
       </form>
+    </div>
+<?php
+  }
+
+  public function site_banner_template () {
+?>
+    <?php if ( is_admin() ): ?>
+      <h2>
+        <?php echo __( 'Banner Preview:', $this->text_domain ); ?>
+      </h2>
+    <?php endif; ?>
+    <div class="brb-banner <?php echo $this->get_color_class(); ?>">
+      <span>
+        <?php echo __( 'Switch web browsers to Brave to protect your privacy and support', $this->text_domain ); ?>
+      </span>
+      <span class="brb-referral-name">
+        <?php echo get_option( 'referral_name' ); ?>
+      </span>
+      <a
+        target="_blank"
+        class="brb-referral-link"
+        href="<?php echo $this->get_option_value( 'referral_link' ); ?>"
+      >
+        <?php echo __( 'Try It Today >>..', $this->text_domain ); ?>
+      </a>
     </div>
 <?php
   }

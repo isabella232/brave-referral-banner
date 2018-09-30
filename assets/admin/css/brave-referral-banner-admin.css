@@ -1,3 +1,10 @@
+/* Preview */
+.preview-hidden {
+  display: none;
+}
+.preview-container {
+  width: 95%;
+}
 
 /* Form */
 .row-hidden {
@@ -15,18 +22,4 @@
   font-weight: normal;
   font-size: 11px;
   font-style: italic;
-}
-
-/* Color Palette */
-.bk-red {
-  background: #EFD7D4;
-}
-.bk-yellow {
-  background: #FDFAD3;
-}
-.bk-black {
-  background: #000;
-}
-.bk-branded {
-  background: #442B8D;
 }
