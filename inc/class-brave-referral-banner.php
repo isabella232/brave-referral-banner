@@ -86,9 +86,19 @@ class WP_Brave_Referral_Banner {
   }
 
   public function load_public_assets () {
-    wp_enqueue_style(
-      'brave_referral_banner_style',
-      plugins_url( '../assets/public/css/brave-referral-banner.css', __FILE__ )
+    // We don't need to load this again in the admin panel
+    if ( ! is_admin() )  {
+      wp_enqueue_style(
+        'brave_referral_banner_style',
+        plugins_url( '../assets/public/css/brave-referral-banner.css', __FILE__ )
+      );
+    }
+    if ( ! wp_script_is( 'jquery', 'enqueued' ) ) {
+      wp_enqueue_script( 'jquery' );
+    }
+    wp_enqueue_script(
+      'brave_referral_banner_script',
+      plugins_url( '../assets/public/js/brave-referral-banner.js', __FILE__ )
     );
   }
 
@@ -202,6 +212,9 @@ class WP_Brave_Referral_Banner {
       <h1>
         <?php echo __( 'Brave Referral Banner', $this->text_domain ); ?>
       </h1>
+      <div class="brave-image">
+        <img src="<?php echo plugins_url( '../assets/admin/img/brave-icon.png', __FILE__ ) ?>" />
+      </div>
       <form method="post" action="options.php">
         <?php settings_fields( $this->settings_group ); ?>
         <?php do_settings_sections( $this->settings_slug ); ?>
@@ -271,20 +284,26 @@ class WP_Brave_Referral_Banner {
             </tr>
           </tbody>
         </table>
-        <?php submit_button(); ?>
+        <?php submit_button( __( 'Update Banner', $this->text_domain ), 'brb-save' ); ?>
       </form>
     </div>
 <?php
   }
 
   public function site_banner_template () {
+    $referral_position = get_option( 'referral_position ' );
+    $position_class = !is_admin()
+      ? $referral_position === 'top'
+        ? 'brb-top'
+        : 'brb-bottom'
+      : "";
 ?>
     <?php if ( is_admin() ): ?>
-      <h2>
+      <h2 class="preview-text">
         <?php echo __( 'Banner Preview:', $this->text_domain ); ?>
       </h2>
     <?php endif; ?>
-    <div class="brb-banner <?php echo $this->get_color_class(); ?>">
+    <div class="brb-banner <?php echo $position_class; ?> <?php echo $this->get_color_class(); ?>">
       <span>
         <?php echo __( 'Switch web browsers to Brave to protect your privacy and support', $this->text_domain ); ?>
       </span>
@@ -298,6 +317,7 @@ class WP_Brave_Referral_Banner {
       >
         <?php echo __( 'Try It Today >>..', $this->text_domain ); ?>
       </a>
+      <a class="brb-referral-close">X</a>
     </div>
 <?php
   }

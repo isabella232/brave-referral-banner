@@ -1,14 +1,35 @@
 /* Banner */
+.brb-top {
+  position: fixed;
+  display: block;
+  top: 0;
+}
+.brb-bottom {
+  display: block;
+  position: fixed;
+  bottom: 0;
+}
 .brb-banner {
   width: 100%;
   color: #000;
   text-align: center;
-  padding: 5px 10px;
+  padding: 10px 15px;
   font-size: 16px;
 }
 .brb-referral-link {
   margin-left: 10px;
   text-decoration: none;
+}
+.brb-referral-close {
+  font-weight: bold;
+  font-size: 20px;
+  float: right;
+  color: #FFF;
+  cursor: pointer;
+  margin-top: -4px;
+}
+.brb-hidden {
+  display: none;
 }
 
 /* Colors */
@@ -38,4 +59,10 @@
 }
 .brb-banner.bk-black, .brb-banner.bk-branded {
   color: #FFF;
+}
+.bk-yellow .brb-referral-close {
+  color: #556DBD;
+}
+.bk-red .brb-referral-close {
+  color: #000;
 }
