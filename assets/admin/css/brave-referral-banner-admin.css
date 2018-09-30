@@ -1,0 +1,32 @@
+
+/* Form */
+.row-hidden {
+  visibility: hidden;
+}
+.style-color {
+  height: 28px;
+  width: 28px;
+  display: inline-block;
+  vertical-align: bottom;
+  margin-left: 5px;
+}
+.sub-label {
+  display: block;
+  font-weight: normal;
+  font-size: 11px;
+  font-style: italic;
+}
+
+/* Color Palette */
+.bk-red {
+  background: #EFD7D4;
+}
+.bk-yellow {
+  background: #FDFAD3;
+}
+.bk-black {
+  background: #000;
+}
+.bk-branded {
+  background: #442B8D;
+}

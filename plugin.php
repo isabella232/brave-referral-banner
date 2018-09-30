@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Brave Referral Banner
  * Version: 1.0
- * Author: ryanml
+ * Author: Brave Software Intl
  * Author URI: https://github.com/brave-intl/brave-referral-banner
  */
 
